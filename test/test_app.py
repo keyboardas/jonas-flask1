@@ -23,7 +23,10 @@ class TestApp(unittest.TestCase):
         """
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.decode(), '<h1><center>This header was changed in a new_branch</center></h1>')
+        self.assertEqual(
+            response.data.decode(),
+            '<h1><center>This header was changed in a new_branch</center></h1>'
+        )
 
 
 if __name__ == '__main__':
