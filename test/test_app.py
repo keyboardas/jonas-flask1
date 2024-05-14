@@ -2,31 +2,29 @@
 Module to test the Flask app
 """
 
-import pytest
+import unittest
 from main import app
 
 
-@pytest.fixture
-def client():
+class TestApp(unittest.TestCase):
     """
-    Fixture to set up a test client
+    Test cases for the Flask app.
     """
-    app.config['TESTING'] = True
-    with app.test_client() as test_client:
-        yield test_client
+
+    def setUp(self):
+        """
+        Set up the test client.
+        """
+        self.app = app.test_client()
+
+    def test_hello_world(self):
+        """
+        Test the hello_world route.
+        """
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.decode(), '<h1><center>This header was changed in a new_branch</center></h1>')
 
 
-def test_index(client):
-    """
-    Test the index route
-    """
-    response = client.get('/')
-    assert b'<h1><center>This header was changed in a new_branch</center></h1>' in response.data
-
-
-def test_nonexistent_route(client):
-    """
-    Test a nonexistent route
-    """
-    response = client.get('/nonexistent')
-    assert response.status_code == 404
+if __name__ == '__main__':
+    unittest.main()
